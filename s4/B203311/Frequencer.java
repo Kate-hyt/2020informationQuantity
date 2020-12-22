@@ -364,14 +364,14 @@ public class Frequencer implements FrequencerInterface{
         int i = len/2;
 
         while(len >= 1){
-            if(i == suffixArray.length){
-                if(targetCompare(suffixArray[i-1], start, end) == 0){
-                    return i;
+            if(i == suffixArray.length-1){
+                if(targetCompare(suffixArray[i], start, end) == 0){
+                    return suffixArray.length;
                 }else{
                     break;
                 }
-            }else if(targetCompare(suffixArray[i-1], start, end) == 0 && targetCompare(suffixArray[i], start, end) == 1){
-                return i;
+            }else if(targetCompare(suffixArray[i], start, end) == 0 && targetCompare(suffixArray[i+1], start, end) == 1){
+                return i+1;
             }else{
                 len /= 2;
                 if(targetCompare(suffixArray[i], start, end) <= 0)

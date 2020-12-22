@@ -306,7 +306,13 @@ public class Frequencer implements FrequencerInterface{
         int i = len/2;
 
         while(len >= 1){
-            if(targetCompare(suffixArray[i-1], start, end) == -1 && targetCompare(suffixArray[i], start, end) == 0){
+            if(i == 0){
+                if(targetCompare(suffixArray[i], start, end) == 0){
+                    return i;
+                }else{
+                    break;
+                }
+            }else if(targetCompare(suffixArray[i-1], start, end) == -1 && targetCompare(suffixArray[i], start, end) == 0){
                 return i;
             }else{
                 len /= 2;
@@ -358,7 +364,13 @@ public class Frequencer implements FrequencerInterface{
         int i = len/2;
 
         while(len >= 1){
-            if(targetCompare(suffixArray[i-1], start, end) == 0 && targetCompare(suffixArray[i], start, end) == 1){
+            if(i == suffixArray.length){
+                if(targetCompare(suffixArray[i-1], start, end) == 0){
+                    return i;
+                }else{
+                    break;
+                }
+            }else if(targetCompare(suffixArray[i-1], start, end) == 0 && targetCompare(suffixArray[i], start, end) == 1){
                 return i;
             }else{
                 len /= 2;
@@ -368,7 +380,7 @@ public class Frequencer implements FrequencerInterface{
                     i -= len/2+1;
             }
         }
-        return suffixArray.length;
+        return 0;
     }
 
 

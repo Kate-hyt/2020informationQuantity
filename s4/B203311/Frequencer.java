@@ -263,9 +263,27 @@ public class Frequencer implements FrequencerInterface{
         // Assuming the suffix array is created from "Hi Ho Hi Ho",                 
         // if target_start_end is "Ho ", it will return 6.                
         //                                                                          
-        // ここにコードを記述せよ。                                                 
+        // ここにコードを記述せよ。    
+
+        /*                                             
         for(int i = 0; i < suffixArray.length; i++){
             if (targetCompare(suffixArray[i], start, end) == 0) return i;
+        }
+        return suffixArray.length;
+        */
+        int len = suffixArray.length;
+        int i = len/2;
+
+        while(len >= 1){
+            if(targetCompare(suffixArray[i-1], start, end) == -1 && targetCompare(suffixArray[i], start, end) == 0){
+                return i;
+            }else{
+                len /= 2;
+                if(targetCompare(suffixArray[i], start, end) >= 0)
+                    i -= len/2+1;
+                else
+                    i += len/2+1;
+            }
         }
         return suffixArray.length;
     }
@@ -297,9 +315,27 @@ public class Frequencer implements FrequencerInterface{
         // Assuming the suffix array is created from "Hi Ho Hi Ho",          
         // if target_start_end is"i", it will return 9 for "Hi Ho Hi Ho".    
         //                                                                   
-        //　ここにコードを記述せよ                                           
+        //　ここにコードを記述せよ    
+        /*                              
         for (int i = 0; i < suffixArray.length; i++){
             if ( targetCompare(suffixArray[suffixArray.length-i-1], start, end) == 0) return suffixArray.length-i;
+        }
+        return 0;
+        */
+
+        int len = suffixArray.length;
+        int i = len/2;
+
+        while(len >= 1){
+            if(targetCompare(suffixArray[i-1], start, end) == 0 && targetCompare(suffixArray[i], start, end) == 1){
+                return i;
+            }else{
+                len /= 2;
+                if(targetCompare(suffixArray[i], start, end) <= 0)
+                    i += len/2+1;
+                else
+                    i -= len/2+1;
+            }
         }
         return 0;
     }
@@ -362,9 +398,11 @@ public class Frequencer implements FrequencerInterface{
             System.out.println("test5:"+frequencerObject.subByteEndIndex(0,2));
             System.out.println("test6:"+frequencerObject.subByteEndIndex(1,2));
 
+        /*
             int result = frequencerObject.frequency();
             System.out.print("Freq = "+ result+" ");
             if(4 == result) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+        */
         }
         catch(Exception e) {
             System.out.println("STOP");

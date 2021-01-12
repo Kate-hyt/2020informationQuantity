@@ -60,6 +60,7 @@ public class InformationEstimator implements InformationEstimatorInterface {
         if(spaceReady == false)
             return Double.MAX_VALUE;
         
+    /*
         boolean [] partition = new boolean[myTarget.length+1];
         int np = 1<<(myTarget.length-1);
         // System.out.println("np="+np+" length="+myTarget.length);
@@ -99,6 +100,32 @@ public class InformationEstimator implements InformationEstimatorInterface {
             if(value1 < value) value = value1;
         }
         return value;
+    */
+        double [] iq = new double[myTarget.length];
+        double value = Double.MAX_VALUE;
+        double value1 = 0;
+
+        for(int i=0; i<myTarget.length; i++){
+            myFrequencer.setTarget(subBytes(myTarget, 0, i+1));
+            iq[i] = iq(myFrequencer.frequency());
+            if(i != 0){
+                double min_iq = iq[i];
+                for(int j=0; j<i; j++){
+                    double sum = 0;
+                    sum += iq[j];
+                    myFrequencer.setTarget(subBytes(myTarget, j+1, i+1));
+                    sum += iq(myFrequencer.frequency());
+                    if(sum < min_iq)
+                        min_iq = sum;
+                }
+                iq[i] = min_iq;
+            }
+        }
+
+        if(value > (value1 = iq[myTarget.length-1]))
+            value = value1;
+        return value;
+    
     }
 
     public static void main(String[] args) {

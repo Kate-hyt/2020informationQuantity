@@ -118,6 +118,7 @@ public class InformationEstimator implements InformationEstimatorInterface {
                     double min = iq[i-1];
                     double sum = 0;
                     for(int j=1; j<i; j++){
+                        sum = 0;
                         sum += iq[j-1];
                         myFrequencer.setTarget(subBytes(myTarget, j, i));
                         sum += iq(myFrequencer.frequency());

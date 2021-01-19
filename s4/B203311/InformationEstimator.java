@@ -24,6 +24,8 @@ public class InformationEstimator implements InformationEstimatorInterface {
 
     boolean targetReady = false;
     boolean spaceReady = false;
+    boolean iqReady = false;
+    double [] iq = new double[myTarget.length];
 
     byte[] subBytes(byte[] x, int start, int end) {
         // corresponding to substring of String for byte[],
@@ -101,29 +103,30 @@ public class InformationEstimator implements InformationEstimatorInterface {
         }
         return value;
     */
-        double [] iq = new double[myTarget.length];
-        double value = Double.MAX_VALUE;
-        double value1 = 0;
+        if(iqReady == false){
+            double value = Double.MAX_VALUE;
+            double value1 = 0;
 
-        for(int i=0; i<myTarget.length; i++){
-            myFrequencer.setTarget(subBytes(myTarget, 0, i+1));
-            iq[i] = iq(myFrequencer.frequency());
-            if(i != 0){
-                double min_iq = iq[i];
-                for(int j=0; j<i; j++){
-                    double sum = 0;
-                    sum += iq[j];
-                    myFrequencer.setTarget(subBytes(myTarget, j+1, i+1));
-                    sum += iq(myFrequencer.frequency());
-                    if(sum < min_iq)
-                        min_iq = sum;
+            for(int i=0; i<myTarget.length; i++){
+                myFrequencer.setTarget(subBytes(myTarget, 0, i+1));
+                iq[i] = iq(myFrequencer.frequency());
+                if(i != 0){
+                    double min_iq = iq[i];
+                    for(int j=0; j<i; j++){
+                        double sum = 0;
+                        sum += iq[j];
+                        myFrequencer.setTarget(subBytes(myTarget, j+1, i+1));
+                        sum += iq(myFrequencer.frequency());
+                        if(sum < min_iq)
+                            min_iq = sum;
+                    }
+                    iq[i] = min_iq;
                 }
-                iq[i] = min_iq;
             }
         }
 
-        if(value > (value1 = iq[myTarget.length-1]))
-            value = value1;
+        if(value > iq[myTarget.length-1])
+            value = iq[myTarget.length-1];
         return value;
     
     }

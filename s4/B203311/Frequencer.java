@@ -303,23 +303,31 @@ public class Frequencer implements FrequencerInterface{
         return suffixArray.length;
         */
         int len = suffixArray.length;
-        int i = len/2;
+        int i = len / 2;
 
         while(len >= 1){
-            if(i == 0){
-                if(targetCompare(suffixArray[i], start, end) == 0){
+            int temp = targetCompare(suffixArray[i], start, end);
+            if(temp == 0){
+                if(i == 0){
+                    return 0;
+                }else if(targetCompare(suffixArray[i-1], start, end) == -1){
                     return i;
                 }else{
-                    break;
+                    len /= 2;
+                    i -= len/2+1;
+                    if(i < 0)
+                        i = 0;
                 }
-            }else if(targetCompare(suffixArray[i-1], start, end) == -1 && targetCompare(suffixArray[i], start, end) == 0){
-                return i;
+            }else if(temp < 0){
+                len /= 2;
+                i += len/2+1;
+                if(i >= suffixArray.length)
+                    i = suffixArray.length-1;
             }else{
                 len /= 2;
-                if(targetCompare(suffixArray[i], start, end) >= 0)
-                    i -= len/2+1;
-                else
-                    i += len/2+1;
+                i -= len/2+1;
+                if(i < 0)
+                    i = 0;
             }
         }
         return suffixArray.length;
@@ -361,26 +369,34 @@ public class Frequencer implements FrequencerInterface{
         */
 
         int len = suffixArray.length;
-        int i = len/2;
+        int i = len / 2;
 
         while(len >= 1){
-            if(i == suffixArray.length-1){
-                if(targetCompare(suffixArray[i], start, end) == 0){
+            int temp = targetCompare(suffixArray[i], start, end);
+            if(temp == 0){
+                if(i == suffixArray.length-1){
                     return suffixArray.length;
+                }else if(targetCompare(suffixArray[i+1], start, end) == 1){
+                    return i+1;
                 }else{
-                    break;
+                    len /= 2;
+                    i += len/2+1;
+                    if(i >= suffixArray.length-1)
+                        i = suffixArray.length-1;
                 }
-            }else if(targetCompare(suffixArray[i], start, end) == 0 && targetCompare(suffixArray[i+1], start, end) == 1){
-                return i+1;
+            }else if(temp < 0){
+                len /= 2;
+                i += len/2+1;
+                if(i >= suffixArray.length)
+                    i = suffixArray.length-1;
             }else{
                 len /= 2;
-                if(targetCompare(suffixArray[i], start, end) <= 0)
-                    i += len/2+1;
-                else
-                    i -= len/2+1;
+                i -= len/2+1;
+                if(i < 0)
+                    i = 0;
             }
         }
-        return 0;
+        return suffixArray.length;
     }
 
 

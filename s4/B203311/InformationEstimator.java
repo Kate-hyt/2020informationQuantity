@@ -25,7 +25,7 @@ public class InformationEstimator implements InformationEstimatorInterface {
     boolean targetReady = false;
     boolean spaceReady = false;
     boolean iqReady = false;
-    double [] iq = new double[myTarget.length];
+    double [] iq;
 
     byte[] subBytes(byte[] x, int start, int end) {
         // corresponding to substring of String for byte[],
@@ -43,14 +43,18 @@ public class InformationEstimator implements InformationEstimatorInterface {
     @Override
     public void setTarget(byte[] target) {
         myTarget = target;
-        if(myTarget.length > 0)
+        iqReady = false;
+        if(myTarget.length > 0){
             targetReady = true;
+            iq = new double[myTarget.length];
+        }
     }
 
     @Override
     public void setSpace(byte[] space) {
         myFrequencer = new Frequencer();
         mySpace = space; myFrequencer.setSpace(space);
+        iqReady = false;
         if(mySpace.length > 0)
             spaceReady = true;
     }
@@ -103,10 +107,10 @@ public class InformationEstimator implements InformationEstimatorInterface {
         }
         return value;
     */
-        if(iqReady == false){
-            double value = Double.MAX_VALUE;
-            double value1 = 0;
+        double value = Double.MAX_VALUE;
+        double value1 = 0;
 
+        if(iqReady == false){
             for(int i=0; i<myTarget.length; i++){
                 myFrequencer.setTarget(subBytes(myTarget, 0, i+1));
                 iq[i] = iq(myFrequencer.frequency());
@@ -123,6 +127,7 @@ public class InformationEstimator implements InformationEstimatorInterface {
                     iq[i] = min_iq;
                 }
             }
+            iqReady = true;
         }
 
         if(value > iq[myTarget.length-1])

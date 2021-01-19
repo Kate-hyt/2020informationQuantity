@@ -111,20 +111,20 @@ public class InformationEstimator implements InformationEstimatorInterface {
         double value1 = 0;
 
         if(iqReady == false){
-            for(int i=0; i<myTarget.length; i++){
-                myFrequencer.setTarget(subBytes(myTarget, 0, i+1));
-                iq[i] = iq(myFrequencer.frequency());
-                if(i != 0){
-                    double min_iq = iq[i];
-                    for(int j=0; j<i; j++){
-                        double sum = 0;
-                        sum += iq[j];
-                        myFrequencer.setTarget(subBytes(myTarget, j+1, i+1));
+            for(int i=1; i<=myTarget.length; i++){
+                myFrequencer.setTarget(subBytes(myTarget, 0, i));
+                iq[i-1] = iq(myFrequencer.frequency());
+                if(i > 1){
+                    double min = iq[i-1];
+                    double sum = 0;
+                    for(int j=1; j<i; j++){
+                        sum += iq[j-1];
+                        myFrequencer.setTarget(subBytes(myTarget, j, i));
                         sum += iq(myFrequencer.frequency());
-                        if(sum < min_iq)
-                            min_iq = sum;
+                        if(min > sum)
+                            min = sum;
                     }
-                    iq[i] = min_iq;
+                    iq[i-1] = min;
                 }
             }
             iqReady = true;
@@ -133,7 +133,7 @@ public class InformationEstimator implements InformationEstimatorInterface {
         if(value > iq[myTarget.length-1])
             value = iq[myTarget.length-1];
         return value;
-    
+        
     }
 
     public static void main(String[] args) {

@@ -71,6 +71,7 @@ public class Frequencer implements FrequencerInterface{
         // if suffix_i = suffix_j, it returns 0;   
 
         // ここにコードを記述せよ 
+        /*
         int result = 0;
         byte[] suffix_i = new byte[mySpace.length-i];
         byte[] suffix_j = new byte[mySpace.length-j];
@@ -106,6 +107,27 @@ public class Frequencer implements FrequencerInterface{
         }
 
         return result; // この行は変更しなければいけない。 
+        */
+        int result = 0;
+        int k;
+        for(k=0; i+k<mySpace.length && j+k<mySpace.length; k++){
+            if(mySpace[i+k] > mySpace[j+k]){
+                result = 1;
+                break;
+            }else if(mySpace[i+k] < mySpace[j+k]){
+                result = -1;
+                break;
+            }
+        }
+        if(result == 0){
+            if(i+k < mySpace.length){
+                result = 1;
+            }else if(j+k < mySpace.length){
+                result = -1;
+            }
+        }
+
+        return result;
     }
 
     public void setSpace(byte []space) { 

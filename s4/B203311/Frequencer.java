@@ -169,12 +169,17 @@ public class Frequencer implements FrequencerInterface{
     }
 
     private void quickSort(int left,int right){
-        int len = right - left;
-        int i = left+1;
+        int len = right - left + 1;
+        int i = left + 1;
         int j = right;
-        if(len > 1){
+        if(len > 2){
+            java.util.Random rnd = new java.util.Random();
             int temp = 0;
-            int pivot = left;
+            int pivot = rnd.nextInt(len)+left;
+            temp = suffixArray[pivot];
+            suffixArray[pivot] = suffixArray[left];
+            suffixArray[left] = temp;
+            pivot = left;
             while(i < j){
                 while(suffixCompare(suffixArray[i], suffixArray[pivot]) != 1 && i < right){
                     i++;
@@ -193,6 +198,13 @@ public class Frequencer implements FrequencerInterface{
             suffixArray[pivot] = temp;
             quickSort(left, j-1);
             quickSort(j+1, right);
+        }else if(len == 2){
+            int temp = 0;
+            if(suffixCompare(suffixArray[left], suffixArray[right]) == 1){
+                temp = suffixArray[right];
+                suffixArray[right] = suffixArray[left];
+                suffixArray[left] = temp;
+            }
         }
     }
 
@@ -453,6 +465,8 @@ public class Frequencer implements FrequencerInterface{
 
             //                                         
             // ****  Please write code to check subByteStartIndex, and subByteEndIndex
+            frequencerObject.setSpace("cedba".getBytes());
+            frequencerObject.printSuffixArray();
             frequencerObject.setTarget("Hi".getBytes());
             System.out.println("test1"+frequencerObject.targetCompare(3, 0, 1));
             System.out.println("test2"+frequencerObject.targetCompare(3, 0, 2));
